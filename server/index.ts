@@ -1,19 +1,15 @@
-import express from 'express'
-import mysql from 'mysql2'
-const app = express();
-
-//mysql setting
-const connection = mysql.createConnection({
-  host: 'localhost',
-  port: 3306,
-  user: 'docker',
-  password: 'docker',
-  database: 'test'
-});
-
-connection.connect();
+import 'dotenv/config'
+import express, { Express, Request, Response }  from 'express'
+import createTable from './config/create_table';
+import cors from 'cors';
+const app: Express = express();
+ 
+ 
+//mysql table creation on the fly
+createTable();
 
 //cors setting
+app.use(cors())
 app.use((req, res, next) => {
  res.header("Access-Control-Allow-Origin", "*")
  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")//
@@ -23,18 +19,21 @@ app.use((req, res, next) => {
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-// Get example
+
+import murmursRoute from './router/murmurs';
+import userRoute from './router/user';
+
 const router: express.Router = express.Router()
 
-router.get('/api/getTest', (req, res) => {
-  res.send(req.query)
-})
+app.use('/api/murmurs', murmursRoute);
+app.use('/api/me', userRoute);
 
-//Post example
-router.post('/api/postTest', (req, res) => {
-  res.send({ hello: 'world' })
-})
+app.use('*', (req: Request, res: Response) => {
+  res.status(404).json({
+    message: "Wrong URL! Doesnt exist"
+  })
+});
 
-app.use(router)
 
-app.listen(3001, () => { console.log('Example app listening on port 3001!') })
+
+app.listen(3001, () => { console.log('Murmurs app listening on port 3001!') })
