@@ -1,9 +1,0 @@
-[
-  {
-    "name": "index",
-    "path": "/",
-    "component": "/opt/projects/aminul/src/pages/index.vue",
-    "chunkName": "pages/index",
-    "_name": "_4fc3980d"
-  }
-]

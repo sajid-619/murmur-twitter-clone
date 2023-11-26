@@ -4,13 +4,18 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js",
-    "watch": "tsc --watch",
-    "tsc": "tsc",
-    "ts-node": "ts-node"
+    "start": "nodemon --exec ts-node --files ./src/index.ts --legacy-watch",
+    "lint": "eslint src/",
+    "lint:fix": "eslint src/ --fix",
+    "format": "prettier --config --ignore-path --write src/**/*.ts"
   },
   "author": "",
   "license": "ISC",
+  "_moduleAliases": {
+    "@root": "./src/global/",
+    "@functions": "./src/functions/",
+    "@routes": "./src/routes/"
+  },
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
